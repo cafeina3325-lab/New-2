@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Hide Next.js Dev Tools Indicator (N button) */
+[data-nextjs-toast],
+[data-nextjs-dev-tools-button],
+nextjs-portal {
+  display: none !important;
+}

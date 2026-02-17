@@ -16,12 +16,18 @@ const genres = [
 
 export default function ContactOverlay({ onClose }: { onClose: () => void }) {
     // Form State
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
     const [selectedPart, setSelectedPart] = useState<string | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
     const [referenceText, setReferenceText] = useState("");
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [files, setFiles] = useState<File[]>([]);
+
+    // ... (Date/Time generation logic remains same - omitted for brevity if unchanged, but for replace_file_content need to be careful. 
+    // Wait, I should probably replace the whole component content or chunks to be safe, but lets try to do it in logical chunks if possible. 
+    // Actually, since I need to renumber EVERYTHING, replacing the body of the component (or large parts of it) is safer.)
 
     // Date Generation (Next 14 days)
     const dates = useMemo(() => {
@@ -52,6 +58,17 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
     }, []);
 
     // Handlers
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = e.target.value.replace(/[^0-9]/g, "");
+        let formatted = raw;
+        if (raw.length > 3 && raw.length <= 7) {
+            formatted = `${raw.slice(0, 3)}-${raw.slice(3)}`;
+        } else if (raw.length > 7) {
+            formatted = `${raw.slice(0, 3)}-${raw.slice(3, 7)}-${raw.slice(7, 11)}`;
+        }
+        setPhone(formatted);
+    };
+
     const handleSingleSelection = (item: string, current: string | null, setCurrent: (v: string | null) => void) => {
         if (current === item) {
             setCurrent(null); // Toggle off
@@ -67,12 +84,14 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
     };
 
     const handleSubmit = () => {
-        if (!selectedPart || !selectedGenre || !selectedDate || !selectedTime) {
-            alert("필수 항목(부위, 장르, 날짜, 시간)을 모두 선택해주세요.");
+        if (!name || !phone || !selectedPart || !selectedGenre || !selectedDate || !selectedTime) {
+            alert("필수 항목(이름, 연락처, 부위, 장르, 날짜, 시간)을 모두 입력해주세요.");
             return;
         }
 
         const formData = {
+            name,
+            phone,
             part: selectedPart,
             genre: selectedGenre,
             referenceText,
@@ -82,7 +101,7 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
         };
 
         console.log("Reservation Request:", formData);
-        alert("상담 예약이 접수되었습니다. \n(실제 서버 전송은 구현되지 않았습니다.)");
+        alert(`[${name}]님, 상담 예약이 접수되었습니다. \n(실제 서버 전송은 구현되지 않았습니다.)`);
         onClose();
     };
 
@@ -124,11 +143,42 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
                         </ul>
                     </section>
 
+                    {/* 1. Basic Info (New) */}
+                    <section>
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">1</span>
+                            Basic Info <span className="text-gray-400 text-sm font-normal ml-auto">* Required</span>
+                        </h3>
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Name <span className="text-red-500">*</span></label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="실명기입"
+                                    className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Phone <span className="text-red-500">*</span></label>
+                                <input
+                                    type="tel"
+                                    value={phone}
+                                    onChange={handlePhoneChange}
+                                    placeholder="010-0000-0000"
+                                    maxLength={13}
+                                    className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                                />
+                            </div>
+                        </div>
+                    </section>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        {/* 1. Area */}
+                        {/* 2. Area */}
                         <section>
                             <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">1</span>
+                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">2</span>
                                 Area <span className="text-gray-400 text-sm font-normal ml-auto">* Single choice</span>
                             </h3>
                             <div className="flex flex-wrap gap-2">
@@ -147,10 +197,10 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
                             </div>
                         </section>
 
-                        {/* 2. Genres */}
+                        {/* 3. Genres */}
                         <section>
                             <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">2</span>
+                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">3</span>
                                 Genres <span className="text-gray-400 text-sm font-normal ml-auto">* Single choice</span>
                             </h3>
                             <div className="flex flex-wrap gap-2">
@@ -170,10 +220,10 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
                         </section>
                     </div>
 
-                    {/* 3. Reference */}
+                    {/* 4. Reference */}
                     <section>
                         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">3</span>
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">4</span>
                             Reference
                         </h3>
                         <div className="space-y-4">
@@ -204,10 +254,10 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
                         </div>
                     </section>
 
-                    {/* 4. Schedule */}
+                    {/* 5. Schedule */}
                     <section>
                         <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">4</span>
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">5</span>
                             Schedule <span className="text-gray-400 text-sm font-normal ml-auto">Date Selection (2 weeks)</span>
                         </h3>
 
@@ -304,9 +354,8 @@ export default function ContactOverlay({ onClose }: { onClose: () => void }) {
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className={`px-8 py-3 bg-black text-white font-bold rounded-lg shadow-lg hover:bg-gray-800 hover:shadow-xl transition-all ${(!selectedDate || !selectedTime || !selectedPart || !selectedGenre) ? 'opacity-50 cursor-not-allowed' : ''
+                        className={`px-8 py-3 bg-black text-white font-bold rounded-lg shadow-lg hover:bg-gray-800 hover:shadow-xl transition-all ${(!name || !phone || !selectedDate || !selectedTime || !selectedPart || !selectedGenre) ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
-                    // disabled={!selectedDate || !selectedTime} // Optional: strictly disable
                     >
                         예약하기
                     </button>
