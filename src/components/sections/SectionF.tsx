@@ -33,17 +33,24 @@ export default function SectionF() {
     ];
 
     return (
-        <section className="py-20 bg-gray-100 w-full overflow-hidden">
+        <section className="min-h-screen flex flex-col justify-center py-20 bg-gray-100 w-full overflow-hidden">
             <div className="container mx-auto px-6 mb-12">
                 <h2 className="text-3xl font-bold text-center text-gray-900">Testimonials</h2>
             </div>
 
-            {/* Horizontal Scroll Container */}
-            <div className="flex overflow-x-auto pb-10 px-6 gap-8 snap-x snap-mandatory scrollbar-hide">
+            {/* Grid Layout: 2 Rows Scroll on Mobile, 1 Row Scroll on Desktop 
+                grid-flow-col: Fills vertically first, then moves right.
+                grid-rows-2: Forces 2 rows height.
+            */}
+            <div className="container mx-auto px-6 pb-10 gap-8 
+                grid grid-flow-col auto-cols-[280px] grid-rows-2 
+                lg:grid-rows-1
+                overflow-x-auto snap-x snap-mandatory scrollbar-hide justify-start">
+
                 {testimonials.map((item) => (
                     <div
                         key={item.id}
-                        className="flex-shrink-0 w-[280px] bg-white p-4 shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300 snap-center"
+                        className="bg-white p-4 shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300 snap-center"
                     >
                         {/* Polaroid Image Area */}
                         <div className={`w-full h-[240px] ${item.image} mb-4 flex items-center justify-center text-gray-500`}>

@@ -8,7 +8,7 @@ export default function SectionC() {
     ];
 
     return (
-        <section className="py-20 bg-white w-full overflow-hidden">
+        <section className="min-h-screen flex flex-col justify-center py-20 bg-white w-full overflow-hidden">
             <div className="container mx-auto px-6">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-2">Monthly Drops</h2>
@@ -16,14 +16,19 @@ export default function SectionC() {
                 </div>
 
                 {/* Horizontal Scroll Image Cards */}
-                <div className="flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory scrollbar-hide mb-12">
+                <div className="flex overflow-x-auto pb-12 gap-6 snap-x snap-mandatory scrollbar-hide mb-12 px-4">
                     {events.map((event) => (
-                        <div
-                            key={event.id}
-                            className="flex-shrink-0 w-[280px] md:w-[320px] bg-gray-100 rounded-lg overflow-hidden shadow-md snap-center"
-                        >
-                            <div className="h-[320px] bg-gray-200 flex items-center justify-center text-gray-400">
-                                <span className="text-lg">Image {event.id}</span>
+                        <div key={event.id} className="filter drop-shadow-md transition-transform hover:-translate-y-2 duration-300">
+                            <div
+                                className="flex-shrink-0 w-[280px] h-[320px] bg-gray-100 flex items-center justify-center text-gray-400 snap-center relative group overflow-hidden"
+                                style={{
+                                    clipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                                    WebkitClipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)"
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-gray-200 flex items-center justify-center group-hover:bg-gray-300 transition-colors">
+                                    <span className="text-lg">Image {event.id}</span>
+                                </div>
                             </div>
                         </div>
                     ))}

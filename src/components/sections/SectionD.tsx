@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 export default function SectionD() {
@@ -17,7 +19,7 @@ export default function SectionD() {
     ];
 
     return (
-        <section className="py-20 bg-gray-50 w-full">
+        <section className="min-h-screen flex flex-col justify-center py-20 bg-gray-50 w-full">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
                     {/* Text Content */}
@@ -35,17 +37,54 @@ export default function SectionD() {
                         </Link>
                     </div>
 
-                    {/* Cards Grid */}
-                    <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        {cards.map((card, index) => (
-                            <div
-                                key={index}
-                                className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center"
-                            >
-                                <h4 className="text-lg font-bold text-gray-900 mb-2">{card.title}</h4>
-                                <p className="text-sm text-gray-500">{card.desc}</p>
+                    {/* Cards Grid - Triangle Layout */}
+                    {/* Cards Grid - Triangle Layout (Gapless & Perfect Ratio) */}
+                    <div className="md:w-1/2 flex flex-col items-center w-full mt-8 md:mt-0">
+                        {/* Top Card (Precision) - Index 0 */}
+                        <div
+                            className="relative z-10 bg-white flex flex-col items-center justify-center text-center filter drop-shadow-xl hover:scale-105 transition-transform duration-300"
+                            style={{
+                                width: '32%', // Adjust base size relative to container
+                                aspectRatio: '1 / 1.1547', // Perfect Regular Hexagon Ratio
+                                clipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                                WebkitClipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                                // marginBottom removed to avoid double negative margin. Overlap is handled by the bottom row's -marginTop.
+                                containerType: 'inline-size', // Enable Container Queries for proportional text
+                            }}
+                        >
+                            <div className="p-[10%] flex flex-col items-center justify-center h-full">
+                                <h4 className="font-bold text-gray-900 mb-[5cqw] text-[11cqw] leading-tight break-keep">{cards[0].title}</h4>
+                                <p className="text-gray-500 word-keep break-keep text-[6.5cqw] leading-relaxed opacity-80">{cards[0].desc}</p>
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Bottom Row (Creativity, Trust) - Index 1, 2 */}
+                        <div
+                            className="flex w-full justify-center gap-[2vw]"
+                            style={{ marginTop: '-6%' }}
+                        // Reduced overlap (was -9.3%) to create vertical breathing room
+                        >
+                            {/* Re-do with strict calc inside mapping */}
+                            {cards.slice(1).map((card, index) => (
+                                <div
+                                    key={index + 1}
+                                    className="bg-white flex flex-col items-center justify-center text-center filter drop-shadow-lg hover:scale-105 transition-transform duration-300"
+                                    style={{
+                                        width: '32%',
+                                        aspectRatio: '1 / 1.1547',
+                                        clipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                                        WebkitClipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                                        // marginTop removed to avoid double negative margin
+                                        containerType: 'inline-size', // Enable Container Queries
+                                    }}
+                                >
+                                    <div className="p-[10%] flex flex-col items-center justify-center h-full">
+                                        <h4 className="font-bold text-gray-900 mb-[5cqw] text-[11cqw] leading-tight break-keep">{card.title}</h4>
+                                        <p className="text-gray-500 word-keep break-keep text-[6.5cqw] leading-relaxed opacity-80">{card.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
