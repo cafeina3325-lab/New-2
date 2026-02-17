@@ -8,7 +8,7 @@ import SectionG from "@/components/sections/SectionG";
 
 export default function Home() {
   return (
-    <main className="pt-[120px]">
+    <main>
       <Hero />
       <SectionB />
       <SectionC />

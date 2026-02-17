@@ -74,20 +74,20 @@ export default function NavMenu({ isHamburgerMode }: { isHamburgerMode?: boolean
                 className={`
                     transition-all duration-500 ease-in-out pointer-events-auto 
                     lg:flex-1 lg:flex lg:items-center lg:justify-end lg:px-8 lg:bg-gray-200
-                    fixed lg:relative top-[100px] md:top-[120px] lg:top-0 left-0 h-[calc(100vh-100px)] md:h-[calc(100vh-120px)] lg:h-[100px] w-[280px] lg:w-auto bg-white/95 lg:bg-gray-200/100 backdrop-blur-md lg:backdrop-blur-none shadow-2xl lg:shadow-none z-40 flex flex-col lg:flex-row pt-8 lg:pt-0 pl-8 lg:pl-0
+                    fixed lg:relative top-[100px] md:top-[120px] lg:top-0 left-0 h-[calc(100vh-100px)] md:h-[calc(100vh-120px)] lg:h-[100px] w-[170px] md:w-[325px] lg:w-auto bg-white/95 lg:bg-gray-200/100 backdrop-blur-md lg:backdrop-blur-none shadow-2xl lg:shadow-none z-40 flex flex-col lg:flex-row pt-8 lg:pt-0
                     overflow-y-auto lg:overflow-y-visible
                     ${showNavBar ? '[clip-path:inset(0_0_0_0)] lg:[clip-path:none] opacity-100' : '[clip-path:inset(0_0_100%_0)] opacity-0 lg:h-0 lg:opacity-0 lg:overflow-hidden lg:[clip-path:none]'}
                 `}
             >
                 {/* Navigation Items - Only render/visible when showing nav bar */}
                 <div className={`flex flex-col lg:flex-row items-start lg:items-center w-full lg:w-auto ${showNavBar ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                    <ul className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8 lg:mr-12 w-full lg:w-auto pb-20 lg:pb-0">
+                    <ul className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8 lg:mr-12 w-full lg:w-auto pb-20 lg:pb-0 pl-8 lg:pl-0">
                         {menuItems.map((item) => (
                             <li key={item.name} className="relative group lg:h-full flex flex-col lg:flex-row lg:items-center item-start w-full lg:w-auto">
                                 <div className="flex items-center justify-between w-full lg:w-auto">
                                     <Link
                                         href={item.path}
-                                        className="text-xl font-medium text-gray-800 hover:text-gray-600 transition-colors py-2 lg:py-4 block w-full lg:w-auto"
+                                        className="text-base lg:text-xl font-medium text-gray-800 hover:text-gray-600 transition-colors py-2 lg:py-4 block w-full lg:w-auto"
                                         onClick={(e) => {
                                             if (isHamburgerMode && item.subItems) {
                                                 e.preventDefault();
@@ -135,7 +135,7 @@ export default function NavMenu({ isHamburgerMode }: { isHamburgerMode?: boolean
                                                     <li key={subItem.name}>
                                                         <Link
                                                             href={subItem.path}
-                                                            className="block px-4 lg:px-6 py-2 lg:py-3 text-sm text-gray-600 hover:bg-gray-100 lg:hover:bg-gray-50 hover:text-black transition-colors whitespace-nowrap"
+                                                            className="block px-4 lg:px-6 py-2 lg:py-3 text-xs lg:text-sm text-gray-600 hover:bg-gray-100 lg:hover:bg-gray-50 hover:text-black transition-colors whitespace-nowrap"
                                                             onClick={() => isHamburgerMode && setIsMenuOpen(false)}
                                                         >
                                                             {subItem.name}
@@ -150,10 +150,10 @@ export default function NavMenu({ isHamburgerMode }: { isHamburgerMode?: boolean
                         ))}
                     </ul>
 
-                    <div className="mt-8 lg:mt-0 w-full lg:w-auto lg:block">
+                    <div className="mt-8 lg:mt-0 w-full lg:w-auto flex justify-center lg:block">
                         <button
                             onClick={handleContactClick}
-                            className="px-6 py-3 bg-gray-800 text-white font-bold rounded hover:bg-gray-700 transition w-full lg:w-auto lg:mr-4"
+                            className="px-9 py-3.5 lg:px-6 lg:py-3 bg-gray-800 text-white font-bold rounded hover:bg-gray-700 transition w-auto lg:w-auto lg:mr-4"
                         >
                             Contact
                         </button>
